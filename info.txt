@@ -1,0 +1,2 @@
+DICOM-Viewer-Prototyp
+verwendet ImageMagick
