@@ -1,5 +1,5 @@
 # dv
-DICOM image Viewer, Open an image file from a DICOM CD with Datei | Öffnen, uses ImageMagick
+DICOM image viewer, open an image file from a DICOM CD with Datei | Öffnen, uses ImageMagick
 
 It calls the convert command of ImageMagick that has to be in the search path for programs.
 
