@@ -1,4 +1,7 @@
 # dv
+
+Try this application, if you cannot open files from a DICOM formatted CD or DVD with the provided viewer on your computer.
+
 DICOM image viewer, open an image file from a DICOM CD with Datei | Öffnen, uses ImageMagick
 
 It calls the convert command of ImageMagick that has to be in the search path for programs.
