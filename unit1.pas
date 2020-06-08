@@ -56,7 +56,7 @@ uses Patch;
 
 procedure TForm1.MenuItem4Click(Sender: TObject);
 const
-  SleepTime = 1000;
+  SleepTime = 1;
 var
   {S: TFileStream;}
   S: TMemoryStream;
@@ -73,12 +73,13 @@ begin
         Application.ProcessMessages;
         ReadBytes := ImageMagick.Output.NumBytesAvailable;
         if ReadBytes = 0 then begin
-          if not ImageMagick.Running then
+          if not ImageMagick.Running then begin
             ShowMessageFmt('ExitStatus = %d, ExitCode = %d', [ImageMagick.ExitStatus, ImageMagick.ExitCode]);
-          Exit
+            Exit
+          end
         end;
         while ImageMagick.Running or (ReadBytes > 0) do begin
-          ShowMessageFmt('%d Bytes empfangen', [ReadBytes]);
+          {ShowMessageFmt('%d Bytes empfangen', [ReadBytes]);}
           if ReadBytes > 0 then S.CopyFrom(ImageMagick.Output, ReadBytes);
           Sleep(SleepTime);
           Application.ProcessMessages;
