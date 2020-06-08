@@ -15,3 +15,7 @@ Quick and dirty means for example:
 Nevertheless, it works and can be optimized/extended/beautified at any time and compiled for many systems.
 
 An easy way to add languages and switch them at runtime is shown in the repository karina
+
+## Install ImageMagick on macOS
+
+I used the \*.tar download and instructions being described at https://imagemagick.org/script/download.php for macOS. Because I'm new to macOS, I haven't found, yet, how to set up the environment variables in a way that is stored in future, either for the current user or for all users. Perhaps you can support me.
