@@ -1,3 +1,5 @@
 .svn
 data
 lib
+.DS_Store
+backup

@@ -56,36 +56,48 @@ uses Patch;
 
 procedure TForm1.MenuItem4Click(Sender: TObject);
 const
-  BufferSize = $FFFF;
+  SleepTime = 1000;
 var
-  S: TFileStream;
+  {S: TFileStream;}
+  S: TMemoryStream;
   ReadBytes: Cardinal;
-  Buffer: array[0..$FFFE] of Byte;
 begin
   if OpenPictureDialog.Execute then begin
-      S := TFileStream.Create(TempFileName, fmCreate);
+      {S := TFileStream.Create(TempFileName, fmCreate);}
+      S := TMemoryStream.Create;
       try
         ImageMagick.Parameters[0] := OpenPictureDialog.FileName;
+        ShowMessageFmt('"%s" wird ausgeführt.', [ImageMagick.Executable]);
         ImageMagick.Execute;
+        Sleep(SleepTime);
+        Application.ProcessMessages;
         ReadBytes := ImageMagick.Output.NumBytesAvailable;
+        if ReadBytes = 0 then begin
+          if not ImageMagick.Running then
+            ShowMessageFmt('ExitStatus = %d, ExitCode = %d', [ImageMagick.ExitStatus, ImageMagick.ExitCode]);
+          Exit
+        end;
         while ImageMagick.Running or (ReadBytes > 0) do begin
-          if ReadBytes > BufferSize then ReadBytes := BufferSize;
-          ReadBytes := ImageMagick.Output.Read(Buffer, ReadBytes);
-          if ReadBytes > 0 then S.Write(Buffer, ReadBytes);
-          {Application.ProcessMessages;}
+          ShowMessageFmt('%d Bytes empfangen', [ReadBytes]);
+          if ReadBytes > 0 then S.CopyFrom(ImageMagick.Output, ReadBytes);
+          Sleep(SleepTime);
+          Application.ProcessMessages;
           ReadBytes := ImageMagick.Output.NumBytesAvailable;
+        end;
+        ShowMessageFmt('Dateigröße: %d Bytes', [S.Size]);
+        S.Seek(0, soBeginning);
+        Image.Picture.Clear;
+        try
+          {Image.Picture.LoadFromFile(TempFileName); }
+          Image.Picture.PNG.LoadFromStream(S);
+          Image.Repaint;
+          Application.ProcessMessages;
+          StatusBar.Caption:= Format('%s geladen', [ImageMagick.Parameters[0]]);
+        except
+          on EInvalidGraphic do raise;
         end;
       finally
         S.Free;
-      end;
-      try
-        Image.Picture.Clear;
-        Image.Picture.LoadFromFile(TempFileName);
-        Image.Repaint;
-        Application.ProcessMessages;
-        StatusBar.Caption:= Format('%s geladen', [ImageMagick.Parameters[0]]);
-      except
-        on EInvalidGraphic do raise;
       end;
   end;
 end;
@@ -102,9 +114,26 @@ begin
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
+var
+  Env: TEnvironment;
 begin
   TempFileExt := '.png';
   TempFileName := ChangeFileExt(SysUtils.GetTempFileName, TempFileExt);
+  Env := TEnvironment.Create;
+  try
+    ImageMagick.Environment := Env;
+{$ifdef darwin}
+    with ImageMagick.Environment do begin
+          Values['MAGICK_HOME'] := Values['HOME'] + '/ImageMagick-7.0.10';
+          Values['PATH'] := Values['MAGICK_HOME'] + '/bin:' + Values['PATH'];
+          Values['DYLD_LIBRARY_PATH'] := Values['MAGICK_HOME'] + '/lib';
+          Values['DISPLAY'] := ':0'
+    end;
+    with ImageMagick do Executable := Environment.Values['MAGICK_HOME'] + '/bin/' + Executable;
+{$endif}
+  finally
+    Env.Free;
+  end;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);

@@ -4,23 +4,23 @@ object Form1: TForm1
   Top = 122
   Width = 870
   Caption = 'Form1'
-  ClientHeight = 567
+  ClientHeight = 592
   ClientWidth = 870
   Menu = MainMenu
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   Position = poDefault
-  LCLVersion = '1.6.2.0'
+  LCLVersion = '2.0.8.0'
   object ScrollBox1: TScrollBox
     Left = 0
-    Height = 543
+    Height = 568
     Top = 0
     Width = 870
-    HorzScrollBar.Page = 847
-    VertScrollBar.Page = 520
+    HorzScrollBar.Page = 868
+    VertScrollBar.Page = 566
     Align = alClient
-    ClientHeight = 520
-    ClientWidth = 847
+    ClientHeight = 566
+    ClientWidth = 868
     TabOrder = 0
     object Image: TImage
       Left = 0
@@ -35,7 +35,7 @@ object Form1: TForm1
   object StatusBar: TPanel
     Left = 0
     Height = 24
-    Top = 543
+    Top = 568
     Width = 870
     Align = alBottom
     Alignment = taLeftJustify
@@ -89,7 +89,7 @@ object Form1: TForm1
       'DICOM-Datei'
       'png:-'
     )
-    Options = [poUsePipes]
+    Options = [poUsePipes, poNoConsole]
     Priority = ppNormal
     StartupOptions = []
     ShowWindow = swoNone
