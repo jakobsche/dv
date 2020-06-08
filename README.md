@@ -18,4 +18,4 @@ An easy way to add languages and switch them at runtime is shown in the reposito
 
 ## Install ImageMagick on macOS
 
-I used the \*.tar download and instructions being described at https://imagemagick.org/script/download.php for macOS. Because I'm new to macOS, I haven't found, yet, how to set up the environment variables in a way that is stored in future, either for the current user or for all users. Perhaps you can support me.
+I used the \*.tar download and instructions being described at https://imagemagick.org/script/download.php for macOS. You have to download it to your home directory and to unpack it there. The other settings are not necessary. If things change in future, it might be necessary to patch it in the source code of the DICOM viewer.
